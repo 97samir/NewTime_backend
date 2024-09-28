@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const path = require('path');
@@ -14,6 +15,14 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Conexión exitosa a MongoDB Atlas"))
     .catch((error) => console.error("Error conectando a MongoDB Atlas: ", error));
+
+
+app.use(cors({
+    origin: 'https://newtimee.vercel.app', // Cambia a la URL de tu frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+
 
 // Rutas
 app.use('/auth', authRoutes);
